@@ -1,3 +1,5 @@
+This fork adds support for command line arguments
+
 ## GENERAL INFORMATION:
 
 - This is the Official Dedicated Installer for [MelonLoader](https://github.com/LavaGang/MelonLoader)
