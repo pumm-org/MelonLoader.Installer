@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using MelonLoader.LightJson;
@@ -10,6 +11,8 @@ namespace MelonLoader
 {
     internal static class ThreadHandler
     {
+        private static string[] ProxyNames = { "version", "winmm", "winhttp" };
+
         internal static void CheckForInstallerUpdate()
         {
             Program.webClient.Headers.Clear();
@@ -160,7 +163,7 @@ namespace MelonLoader
                     Program.mainForm.PleaseWait_Text.Location = new Point(94, 79);
                     Program.mainForm.PleaseWait_Text.Size = new Size(266, 19);
                     Program.mainForm.Error_Retry.Visible = true;
-                    return;
+                    //return;
                 }
                 Program.mainForm.PleaseWait_PleaseWait.Visible = false;
                 Program.mainForm.PleaseWait_Text.Visible = false;
@@ -183,18 +186,15 @@ namespace MelonLoader
                 else
                     Config.LastSelectedGamePath = null;
 
-                /*
+
                 if (!string.IsNullOrEmpty(CommandLine.ExePath))
                 {
-                    if (Program.ValidateUnityGamePath(ref CommandLine.ExePath))
-                    {
-                        MessageBox.Show(CommandLine.ExePath);
-                        Program.mainForm.SetUnityGame(CommandLine.ExePath);
-                    }
-                    else
-                        MessageBox.Show("Invalid File Selected!", BuildInfo.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //if (Program.ValidateUnityGamePath(ref CommandLine.ExePath)) return;
+
+                    MessageBox.Show(string.Join(", ", CommandLine.__args));
+                    if (CommandLine.__args.Contains("/u") && !CommandLine.__args.Contains("/i")) { OperationHandler.CurrentOperation = OperationHandler.Operations.UNINSTALL; OperationHandler.Uninstall(Path.GetDirectoryName(CommandLine.ExePath)); }
+                    if (CommandLine.__args.Contains("/i") && !CommandLine.__args.Contains("/u")) { CommandLine.Install(); }
                 }
-                */
             }));
         }
 

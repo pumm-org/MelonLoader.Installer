@@ -39,11 +39,11 @@ namespace MelonLoader
         [STAThread]
         private static int Main(string[] args)
         {
-            if (FileNameCheck(args))
-                return 0;
-            //int commandlineval = 0;
-            //if (CommandLine.Run(args, ref commandlineval))
-            //    return commandlineval;
+            //if (FileNameCheck(args))
+                //return 0;
+            int commandlineval = 0;
+            if(CommandLine.Run(args, ref commandlineval))
+             // return commandlineval;
             mainForm = new MainForm();
             Application.Run(mainForm);
             return 0;
@@ -59,14 +59,13 @@ namespace MelonLoader
                 string tmp_exe_path = Path.Combine(exe_path, (exe_name + ".tmp.exe"));
                 if (File.Exists(tmp_exe_path))
                     File.Delete(tmp_exe_path);
-                return false;
+                //return false;
             }
-            string new_exe_name = exe_name.Substring(0, (exe_name.Length - 4));
-            string new_exe_path = Path.Combine(exe_path, (new_exe_name + ".exe"));
+            string new_exe_path = Path.Combine(exe_path, exe_name + ".exe");
             if (File.Exists(new_exe_path))
                 File.Delete(new_exe_path);
             File.Copy(exe_fullpath, new_exe_path);
-            ProcessStartInfo procinfo = new(new_exe_path);
+            ProcessStartInfo procinfo = new(exe_fullpath);
             if ((args != null) && (args.Length > 0))
                 procinfo.Arguments = string.Join(" ", args.Where(s => !string.IsNullOrEmpty(s)).Select(it => ("\"" + Regex.Replace(it, @"(\\+)$", @"$1$1") + "\""))); ;
             Process.Start(procinfo);
