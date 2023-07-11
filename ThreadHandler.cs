@@ -149,53 +149,61 @@ namespace MelonLoader
             }));
             if (Releases.All.Count <= 0)
                 Releases.RequestLists();
-            Program.mainForm.Invoke(new Action(() =>
+            try
             {
-                Program.mainForm.RefreshReleasesListing();
-                if (Program.mainForm.Automated_Version_Selection.Items.Count <= 0)
+                Program.mainForm.Invoke(new Action(() =>
                 {
-                    Program.mainForm.PageManager.Cursor = Cursors.Hand;
-                    Program.mainForm.PleaseWait_PleaseWait.ForeColor = Color.Red;
-                    Program.mainForm.PleaseWait_PleaseWait.Text = "ERROR";
-                    Program.mainForm.PleaseWait_PleaseWait.Location = new Point(184, 36);
-                    Program.mainForm.PleaseWait_PleaseWait.Size = new Size(72, 25);
-                    Program.mainForm.PleaseWait_Text.Text = "Failed to get List of Releases from GitHub!";
-                    Program.mainForm.PleaseWait_Text.Location = new Point(94, 79);
-                    Program.mainForm.PleaseWait_Text.Size = new Size(266, 19);
-                    Program.mainForm.Error_Retry.Visible = true;
-                    //return;
-                }
-                Program.mainForm.PleaseWait_PleaseWait.Visible = false;
-                Program.mainForm.PleaseWait_Text.Visible = false;
-                Program.mainForm.Error_Retry.Visible = false;
-                Program.mainForm.Automated_UnityGame_Text.Visible = true;
-                Program.mainForm.Automated_UnityGame_Select.Visible = true;
-                Program.mainForm.Automated_UnityGame_Display.Visible = true;
-                Program.mainForm.Automated_Arch_Text.Visible = true;
-                Program.mainForm.Automated_Divider.Visible = true;
-                Program.mainForm.Automated_Install.Visible = true;
-                Program.mainForm.Automated_Version_Text.Visible = true;
-                Program.mainForm.Automated_Version_Selection.Visible = true;
-                Program.mainForm.Automated_Version_Latest.Visible = true;
+                    Program.mainForm.RefreshReleasesListing();
+                    if (Program.mainForm.Automated_Version_Selection.Items.Count <= 0)
+                    {
+                        Program.mainForm.PageManager.Cursor = Cursors.Hand;
+                        Program.mainForm.PleaseWait_PleaseWait.ForeColor = Color.Red;
+                        Program.mainForm.PleaseWait_PleaseWait.Text = "ERROR";
+                        Program.mainForm.PleaseWait_PleaseWait.Location = new Point(184, 36);
+                        Program.mainForm.PleaseWait_PleaseWait.Size = new Size(72, 25);
+                        Program.mainForm.PleaseWait_Text.Text = "Failed to get List of Releases from GitHub!";
+                        Program.mainForm.PleaseWait_Text.Location = new Point(94, 79);
+                        Program.mainForm.PleaseWait_Text.Size = new Size(266, 19);
+                        Program.mainForm.Error_Retry.Visible = true;
+                        //return;
+                    }
+                    Program.mainForm.PleaseWait_PleaseWait.Visible = false;
+                    Program.mainForm.PleaseWait_Text.Visible = false;
+                    Program.mainForm.Error_Retry.Visible = false;
+                    Program.mainForm.Automated_UnityGame_Text.Visible = true;
+                    Program.mainForm.Automated_UnityGame_Select.Visible = true;
+                    Program.mainForm.Automated_UnityGame_Display.Visible = true;
+                    Program.mainForm.Automated_Arch_Text.Visible = true;
+                    Program.mainForm.Automated_Divider.Visible = true;
+                    Program.mainForm.Automated_Install.Visible = true;
+                    Program.mainForm.Automated_Version_Text.Visible = true;
+                    Program.mainForm.Automated_Version_Selection.Visible = true;
+                    Program.mainForm.Automated_Version_Latest.Visible = true;
 
-                if (Config.RememberLastSelectedGame)
-                {
-                    if (!string.IsNullOrEmpty(Config.LastSelectedGamePath))
-                        Program.mainForm.SetUnityGame(Config.LastSelectedGamePath);
-                }
-                else
-                    Config.LastSelectedGamePath = null;
+                    if (Config.RememberLastSelectedGame)
+                    {
+                        if (!string.IsNullOrEmpty(Config.LastSelectedGamePath))
+                            Program.mainForm.SetUnityGame(Config.LastSelectedGamePath);
+                    }
+                    else
+                        Config.LastSelectedGamePath = null;
 
 
-                if (!string.IsNullOrEmpty(CommandLine.ExePath))
-                {
-                    //if (Program.ValidateUnityGamePath(ref CommandLine.ExePath)) return;
+                    if (!string.IsNullOrEmpty(CommandLine.ExePath))
+                    {
+                        //if (Program.ValidateUnityGamePath(ref CommandLine.ExePath)) return;
 
-                    MessageBox.Show(string.Join(", ", CommandLine.__args));
-                    if (CommandLine.__args.Contains("/u") && !CommandLine.__args.Contains("/i")) { OperationHandler.CurrentOperation = OperationHandler.Operations.UNINSTALL; OperationHandler.Uninstall(Path.GetDirectoryName(CommandLine.ExePath)); }
-                    if (CommandLine.__args.Contains("/i") && !CommandLine.__args.Contains("/u")) { CommandLine.Install(); }
-                }
-            }));
+                        if (CommandLine.__args.Contains("/u") && !CommandLine.__args.Contains("/i")) { OperationHandler.CurrentOperation = OperationHandler.Operations.UNINSTALL; OperationHandler.Uninstall(Path.GetDirectoryName(CommandLine.ExePath)); }
+                        if (CommandLine.__args.Contains("/i") && !CommandLine.__args.Contains("/u")) { CommandLine.Install(); }
+                        OperationHandler.CurrentOperation = OperationHandler.Operations.NONE;
+                        Application.Exit();
+                    }
+                }));
+            }
+            catch
+            {
+
+            }
         }
 
         internal delegate void RecursiveFuncRecurse();

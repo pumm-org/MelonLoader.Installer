@@ -414,5 +414,10 @@ namespace MelonLoader
             Config.ShowAlphaPreReleases = Settings_ShowAlphaPreReleases.Checked;
             RefreshReleasesListing();
         }
+
+        private void Automated_Version_Selection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

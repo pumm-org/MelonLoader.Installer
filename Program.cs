@@ -43,7 +43,7 @@ namespace MelonLoader
                 //return 0;
             int commandlineval = 0;
             if(CommandLine.Run(args, ref commandlineval))
-             // return commandlineval;
+             //return commandlineval;
             mainForm = new MainForm();
             Application.Run(mainForm);
             return 0;
@@ -156,15 +156,6 @@ namespace MelonLoader
         {
             mainForm.Invoke(new Action(() =>
             {
-                MessageBox.Show(msg, BuildInfo.Name, buttons, icon);
-                if (icon != MessageBoxIcon.Error)
-                {
-                    if (Config.CloseAfterCompletion)
-                    {
-                        Process.GetCurrentProcess().Kill();
-                        return;
-                    }
-                }
                 mainForm.Automated_Install.Enabled = true;
                 mainForm.CheckUnityGame();
                 mainForm.PageManager.Controls.Clear();
@@ -174,7 +165,6 @@ namespace MelonLoader
                 mainForm.PageManager.Cursor = Cursors.Hand;
                 mainForm.PageManager.Select();
                 SetTotalPercentage(0);
-                OperationHandler.CurrentOperation = OperationHandler.Operations.NONE;
             }));
         }
 
